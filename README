@@ -1,1 +1,6 @@
 See our AWS presentation on http://www.confitura.pl!
+
+To start, follow these three easy steps:
+# Create a "messages" domain in your SimpleDB, eu-west region
+# Create a file src/main/resources/aws.properties and fill in the access key id and secret access key
+# Execute: mvn jetty:run
