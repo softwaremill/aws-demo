@@ -1,7 +1,7 @@
 <html>
 <head>
-<script src="/js/jquery-1.4.4.js" type="text/javascript"></script>
-<script src="/js/pure-min-2.70.js" type="text/javascript"></script>
+    <script src="/js/jquery-1.4.4.js" type="text/javascript"></script>
+    <script src="/js/pure-min-2.70.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="_message_list_template" style="display: none">
@@ -34,6 +34,7 @@
         Message:
         <input type="text" id="_add_message_content" maxlength="512" />
         <input type="submit" value="Add" />
+        <span id="_add_message_flash"></span>
     </form>
 </div>
 
@@ -68,21 +69,23 @@
 
             if (content) {
                 $.post("/add_message", { content: content, room: currentRoom }, function() {
-                    console.log("Message added");
+                    var $msg = $("<span>Message added, it will be visible shortly</span>");
+                    $("#_add_message_flash").append($msg);
+                    $msg.hide().fadeIn(2000).delay(5000).fadeOut(2000);
                 });
             }
         });
 
         var fill_messages_list = $p("#_message_list_template div").compile({
-                "tr._message": {
-                    "message<-messages": {
-                        "td._message_content": "message.content",
-                        "td._message_date": function(ctx) {
-                            return new Date(ctx.item.date);
+                    "tr._message": {
+                        "message<-messages": {
+                            "td._message_content": "message.content",
+                            "td._message_date": function(ctx) {
+                                return new Date(ctx.item.date);
+                            }
                         }
                     }
-                }
-           });
+                });
 
         function refreshMessageList() {
             $.get("/list_messages", { room: currentRoom }, function(data) {
@@ -94,8 +97,13 @@
         $("#_message_list_refresh").click(function(e) {
             e.preventDefault();
             refreshMessageList();
-        })
+        });
 
+        // Referesh every 5secs
+        window.setInterval(refreshMessageList, 5000);
+
+        // Initial refresh
+        refreshMessageList();
     });
 </script>
 </body>
