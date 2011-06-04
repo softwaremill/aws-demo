@@ -20,6 +20,16 @@
 </div>
 
 <div>
+    Rooms:
+    <a href="#" id="_choose_room_confitura">Confitura</a> |
+    <a href="#" id="_choose_room_robots">Robots</a>
+</div>
+
+<div>
+    Current room: <span id="_current_room">confitura</span>
+</div>
+
+<div>
     <form id="_add_message_form">
         Message:
         <input type="text" id="_add_message_content" maxlength="512" />
@@ -39,12 +49,25 @@
 
 <script>
     $().ready(function() {
+        var currentRoom = "confitura";
+
+        function selectRoom(room) {
+            currentRoom = room;
+            $("#_message_list_container").empty();
+            refreshMessageList();
+            $("#_current_room").html(currentRoom);
+        }
+
+        $("#_choose_room_confitura").click(function() { selectRoom("confitura"); });
+        $("#_choose_room_robots").click(function() { selectRoom("robots"); });
+
         $("#_add_message_form").submit(function(e) {
             e.preventDefault();
             var content = $("#_add_message_content").val();
+            $("#_add_message_content").val("");
 
             if (content) {
-                $.post("/add_message", { content: content }, function() {
+                $.post("/add_message", { content: content, room: currentRoom }, function() {
                     console.log("Message added");
                 });
             }
@@ -54,13 +77,15 @@
                 "tr._message": {
                     "message<-messages": {
                         "td._message_content": "message.content",
-                        "td._message_date": "message.date"
+                        "td._message_date": function(ctx) {
+                            return new Date(ctx.item.date);
+                        }
                     }
                 }
            });
 
         function refreshMessageList() {
-            $.get("/list_messages", {}, function(data) {
+            $.get("/list_messages", { room: currentRoom }, function(data) {
                 var html = fill_messages_list({ messages: data });
                 $("#_message_list_container").empty().html(html);
             });

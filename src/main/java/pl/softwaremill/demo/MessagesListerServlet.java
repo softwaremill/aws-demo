@@ -26,7 +26,7 @@ public class MessagesListerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
         MessagesLister messagesLister = new MessagesLister(messagesDomainProvider);
-        List<Message> messages = messagesLister.listRecentMessages("confitura");
+        List<Message> messages = messagesLister.listRecentMessages(req.getParameter("room"));
 
         MessageListSerializer messageListSerializer = new MessageListSerializer();
         String serialized = messageListSerializer.serialize(messages);

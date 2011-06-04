@@ -28,7 +28,7 @@ public class MessageAdderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message(
                 UUID.randomUUID(),
-                "confitura",
+                req.getParameter("room"),
                 req.getParameter("content"),
                 new DateTime()
         );
