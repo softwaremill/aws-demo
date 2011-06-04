@@ -31,7 +31,7 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.7.5</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
@@ -52,4 +52,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>softwaremill-jbison-repository</id>
+            <name>Softwaremill JBison Repository Group</name>
+            <url>http://tools.softwaremill.pl/nexus/content/groups/jbison-repos/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
