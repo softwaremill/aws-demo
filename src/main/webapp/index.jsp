@@ -59,8 +59,8 @@
             $("#_current_room").html(currentRoom);
         }
 
-        $("#_choose_room_confitura").click(function() { selectRoom("confitura"); });
-        $("#_choose_room_robots").click(function() { selectRoom("robots"); });
+        $("#_choose_room_confitura").click(function(e) { e.preventDefault(); selectRoom("confitura"); });
+        $("#_choose_room_robots").click(function(e) { e.preventDefault(); selectRoom("robots"); });
 
         $("#_add_message_form").submit(function(e) {
             e.preventDefault();
