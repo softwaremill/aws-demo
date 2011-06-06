@@ -6,12 +6,12 @@
   <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>MessageAdder</servlet-name>
-        <servlet-class>pl.softwaremill.demo.MessageAdderServlet</servlet-class>
+        <servlet-class>pl.softwaremill.demo.servlets.MessageAdderServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>MessagesLister</servlet-name>
-        <servlet-class>pl.softwaremill.demo.MessagesListerServlet</servlet-class>
+        <servlet-class>pl.softwaremill.demo.servlets.MessagesListerServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>

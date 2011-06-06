@@ -1,6 +1,7 @@
 package pl.softwaremill.demo;
 
 import com.xerox.amazonws.ec2.*;
+import pl.softwaremill.demo.impl.sdb.AwsAccessKeys;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,8 +1,9 @@
-package pl.softwaremill.demo;
+package pl.softwaremill.demo.impl.sdb;
 
 import com.xerox.amazonws.simpledb.Domain;
 import com.xerox.amazonws.simpledb.SDBException;
 import com.xerox.amazonws.simpledb.SimpleDB;
+import pl.softwaremill.demo.MessageMappingConstants;
 
 /**
  * @author Adam Warski (adam at warski dot org)

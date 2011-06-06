@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="pl.softwaremill.demo">
+
+    <class name="pl.softwaremill.demo.entity.Message" table="MESSAGES">
+        <id name="uuid" column="id"/>
+        <property name="room"/>
+        <property name="content"/>
+        <property name="date" type="org.joda.time.contrib.hibernate.PersistentDateTime"/>
+    </class>
+
+</hibernate-mapping>

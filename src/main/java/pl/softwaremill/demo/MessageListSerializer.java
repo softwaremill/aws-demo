@@ -1,6 +1,7 @@
 package pl.softwaremill.demo;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import pl.softwaremill.demo.entity.Message;
 
 import java.io.IOException;
 import java.util.List;

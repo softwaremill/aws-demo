@@ -1,4 +1,4 @@
-package pl.softwaremill.demo;
+package pl.softwaremill.demo.impl.sdb;
 
 import com.google.common.io.Resources;
 

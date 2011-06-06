@@ -1,7 +1,7 @@
 <html>
 <head>
-    <script src="/js/jquery-1.4.4.js" type="text/javascript"></script>
-    <script src="/js/pure-min-2.70.js" type="text/javascript"></script>
+    <script src="js/jquery-1.4.4.js" type="text/javascript"></script>
+    <script src="js/pure-min-2.70.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="_message_list_template" style="display: none">
@@ -68,7 +68,7 @@
             $("#_add_message_content").val("");
 
             if (content) {
-                $.post("/add_message", { content: content, room: currentRoom }, function() {
+                $.post("add_message", { content: content, room: currentRoom }, function() {
                     var $msg = $("<span>Message added, it will be visible shortly</span>");
                     $("#_add_message_flash").append($msg);
                     $msg.hide().fadeIn(2000).delay(5000).fadeOut(2000);
@@ -88,7 +88,7 @@
                 });
 
         function refreshMessageList() {
-            $.get("/list_messages", { room: currentRoom }, function(data) {
+            $.get("list_messages", { room: currentRoom }, function(data) {
                 var html = fill_messages_list({ messages: data });
                 $("#_message_list_container").empty().html(html);
             });

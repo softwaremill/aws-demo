@@ -1,4 +1,4 @@
-package pl.softwaremill.demo;
+package pl.softwaremill.demo.entity;
 
 import org.joda.time.DateTime;
 
@@ -8,19 +8,26 @@ import java.util.UUID;
  * @author Adam Warski (adam at warski dot org)
  */
 public class Message {
-    private final UUID uuid;
-    private final String room;
-    private final String content;
-    private final DateTime date;
+
+    private String uuid;
+
+    private String room;
+
+    private String content;
+
+    private DateTime date;
+
+    public Message() {
+    }
 
     public Message(UUID uuid, String room, String content, DateTime date) {
-        this.uuid = uuid;
+        this.uuid = uuid.toString();
         this.room = room;
         this.content = content;
         this.date = date;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
@@ -34,6 +41,22 @@ public class Message {
 
     public DateTime getDate() {
         return date;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setDate(DateTime date) {
+        this.date = date;
     }
 
     @Override

@@ -1,8 +1,10 @@
-package pl.softwaremill.demo;
+package pl.softwaremill.demo.impl.sdb;
 
 import com.xerox.amazonws.simpledb.Item;
 import com.xerox.amazonws.simpledb.SDBException;
 import org.joda.time.format.ISODateTimeFormat;
+import pl.softwaremill.demo.entity.Message;
+import pl.softwaremill.demo.service.MessagesLister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +15,14 @@ import static pl.softwaremill.demo.MessageMappingConstants.*;
 /**
  * @author Adam Warski (adam at warski dot org)
  */
-public class MessagesLister {
+public class SDBMessageLister implements MessagesLister {
     private final MessagesDomainProvider messagesDomainProvider;
 
-    public MessagesLister(MessagesDomainProvider messagesDomainProvider) {
+    public SDBMessageLister(MessagesDomainProvider messagesDomainProvider) {
         this.messagesDomainProvider = messagesDomainProvider;
     }
 
+    @Override
     public List<Message> listRecentMessages(String room) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ").append(MESSAGES_DOMAIN).append(" WHERE ")
