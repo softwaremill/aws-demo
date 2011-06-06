@@ -2,12 +2,13 @@ package pl.softwaremill.demo.entity;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * @author Adam Warski (adam at warski dot org)
  */
-public class Message {
+public class Message implements Serializable {
 
     private String uuid;
 
