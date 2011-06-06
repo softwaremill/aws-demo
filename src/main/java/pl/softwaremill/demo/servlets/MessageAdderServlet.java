@@ -5,6 +5,7 @@ import org.hibernate.cfg.Configuration;
 import org.joda.time.DateTime;
 import pl.softwaremill.demo.impl.hibernate.HibernateMessageAdder;
 import pl.softwaremill.demo.impl.hibernate.HibernateMessageLister;
+import pl.softwaremill.demo.impl.hibernate.SessionFactoryProvider;
 import pl.softwaremill.demo.impl.sdb.AwsAccessKeys;
 import pl.softwaremill.demo.entity.Message;
 import pl.softwaremill.demo.impl.sdb.MessagesDomainProvider;
@@ -26,21 +27,20 @@ public class MessageAdderServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-//        try {
-//            AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
-//
-//            MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
-//            messageAdder = new SDBMessageAdder(messagesDomainProvider);
-//        } catch (IOException e) {
-//            throw new ServletException(e);
-//        }
 
-        // start hibernate
-        SessionFactory sessionFactory = new Configuration()
-                .configure() // configures settings from hibernate.cfg.xml
-                .buildSessionFactory();
+        if (System.getProperty("local") == null) {
+            try {
+                AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
 
-        messageAdder = new HibernateMessageAdder(sessionFactory);
+                MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
+                messageAdder = new SDBMessageAdder(messagesDomainProvider);
+            } catch (IOException e) {
+                throw new ServletException(e);
+            }
+        }
+        else {
+            messageAdder = new HibernateMessageAdder(new SessionFactoryProvider().getSessionFactory());
+        }
     }
 
     @Override

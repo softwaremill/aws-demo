@@ -1,6 +1,8 @@
 See our AWS presentation on http://www.confitura.pl!
 
 To start, follow these three easy steps:
-# Create a "messages" domain in your SimpleDB, eu-west region
+# Create a "messages" domain in your SimpleDB, eu-west region or create aws-demo mysql database with root/nopass access
 # Create a file src/main/resources/aws.properties and fill in the access key id and secret access key
-# Execute: mvn jetty:run
+# Execute: mvn jetty:run [-Dlocal]
+
+Optional parameter -Dlocal will use the hibernate/mysql implementation implementation

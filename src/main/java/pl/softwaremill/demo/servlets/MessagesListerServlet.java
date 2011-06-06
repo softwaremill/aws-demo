@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
 import pl.softwaremill.demo.impl.hibernate.HibernateMessageLister;
+import pl.softwaremill.demo.impl.hibernate.SessionFactoryProvider;
 import pl.softwaremill.demo.impl.sdb.AwsAccessKeys;
 import pl.softwaremill.demo.MessageListSerializer;
 import pl.softwaremill.demo.entity.Message;
@@ -26,23 +27,22 @@ public class MessagesListerServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-//        try {
-//            AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
-//
-//            MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
-//
-//            messagesLister = new SDBMessageLister(messagesDomainProvider);
-//
-//        } catch (IOException e) {
-//            throw new ServletException(e);
-//        }
 
-        // start hibernate
-        SessionFactory sessionFactory = new Configuration()
-                .configure() // configures settings from hibernate.cfg.xml
-                .buildSessionFactory();
+        if (System.getProperty("local") == null) {
+            try {
+                AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
 
-        messagesLister = new HibernateMessageLister(sessionFactory);
+                MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
+
+                messagesLister = new SDBMessageLister(messagesDomainProvider);
+
+            } catch (IOException e) {
+                throw new ServletException(e);
+            }
+        }
+        else {
+            messagesLister = new HibernateMessageLister(new SessionFactoryProvider().getSessionFactory());
+        }
     }
 
     @Override
