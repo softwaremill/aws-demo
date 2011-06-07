@@ -10,10 +10,14 @@
             <tr>
                 <th>Content</th>
                 <th>Date</th>
+                <th>Save Date</th>
+                <th>Delay</th>
             </tr>
             <tr class="_message">
                 <td class="_message_content"></td>
                 <td class="_message_date"></td>
+                <td class="_message_save_date"></td>
+                <td class="_message_delay"></td>
             </tr>
         </table>
     </div>
@@ -82,6 +86,12 @@
                             "td._message_content": "message.content",
                             "td._message_date": function(ctx) {
                                 return new Date(ctx.item.date);
+                            },
+                            "td._message_save_date": function(ctx) {
+                                return new Date(ctx.item.saveDate);
+                            },
+                            "td._message_delay": function(ctx) {
+                                return (ctx.item.saveDate - ctx.item.date) / 1000;
                             }
                         }
                     }
@@ -100,7 +110,7 @@
         });
 
         // Referesh every 5secs
-        window.setInterval(refreshMessageList, 5000);
+        window.setInterval(refreshMessageList, 500);
 
         // Initial refresh
         refreshMessageList();

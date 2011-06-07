@@ -52,7 +52,8 @@ public class SDBMessageLister implements MessagesLister {
                 UUID.fromString(item.getIdentifier()),
                 item.getAttribute(ROOM),
                 item.getAttribute(CONTENT),
-                ISODateTimeFormat.dateTimeNoMillis().parseDateTime(item.getAttribute(DATE))
+                ISODateTimeFormat.dateTimeNoMillis().parseDateTime(item.getAttribute(DATE)),
+                ISODateTimeFormat.dateTimeNoMillis().parseDateTime(item.getAttribute(SAVE_DATE))
         );
     }
 }

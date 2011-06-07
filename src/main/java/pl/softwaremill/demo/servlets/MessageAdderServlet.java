@@ -54,7 +54,8 @@ public class MessageAdderServlet extends HttpServlet {
                 UUID.randomUUID(),
                 req.getParameter("room"),
                 req.getParameter("content"),
-                new DateTime()
+                new DateTime(),
+                null
         );
 
         resp.getWriter().print("OK");

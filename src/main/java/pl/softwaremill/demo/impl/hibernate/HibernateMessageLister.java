@@ -22,7 +22,7 @@ public class HibernateMessageLister implements MessagesLister {
     public List<Message> listRecentMessages(String room) {
         Session session = sessionFactory.openSession();
 
-        return session.createQuery("select m from Message m where m.room = :room")
+        return session.createQuery("select m from Message m where m.room = :room order by m.date desc")
                 .setParameter("room", room).setMaxResults(100).list();
     }
 }

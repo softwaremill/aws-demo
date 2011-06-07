@@ -1,4 +1,4 @@
-package pl.softwaremill.demo;
+package pl.softwaremill.demo.tools;
 
 import com.xerox.amazonws.ec2.*;
 import pl.softwaremill.demo.impl.sdb.AwsAccessKeys;

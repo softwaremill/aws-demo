@@ -2,6 +2,7 @@ package pl.softwaremill.demo.entity;
 
 import org.joda.time.DateTime;
 
+import javax.persistence.PrePersist;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -18,14 +19,17 @@ public class Message implements Serializable {
 
     private DateTime date;
 
+    private DateTime saveDate;
+
     public Message() {
     }
 
-    public Message(UUID uuid, String room, String content, DateTime date) {
+    public Message(UUID uuid, String room, String content, DateTime date, DateTime saveDate) {
         this.uuid = uuid.toString();
         this.room = room;
         this.content = content;
         this.date = date;
+        this.saveDate = saveDate;
     }
 
     public String getUuid() {
@@ -60,6 +64,14 @@ public class Message implements Serializable {
         this.date = date;
     }
 
+    public DateTime getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(DateTime saveDate) {
+        this.saveDate = saveDate;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -67,6 +79,7 @@ public class Message implements Serializable {
                 ", room='" + room + '\'' +
                 ", content='" + content + '\'' +
                 ", date=" + date +
+                ", saveDate=" + saveDate +
                 '}';
     }
 }

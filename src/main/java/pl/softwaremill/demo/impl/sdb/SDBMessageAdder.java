@@ -3,6 +3,7 @@ package pl.softwaremill.demo.impl.sdb;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.xerox.amazonws.simpledb.SDBException;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
 import pl.softwaremill.demo.MessageMappingConstants;
@@ -26,11 +27,16 @@ public class SDBMessageAdder implements MessageAdder {
     public void addMessage(Message msg) {
         System.out.println("Adding message: " + msg);
 
+        if (msg.getSaveDate() == null)
+            msg.setSaveDate(new DateTime());
+
         SetMultimap<String, String> attrs = HashMultimap.create();
         attrs.put(MessageMappingConstants.ROOM, msg.getRoom());
         attrs.put(MessageMappingConstants.CONTENT, msg.getContent());
         attrs.put(MessageMappingConstants.DATE,
                 ISODateTimeFormat.dateTimeNoMillis().withZone(DateTimeZone.UTC).print(msg.getDate()));
+        attrs.put(MessageMappingConstants.SAVE_DATE,
+                ISODateTimeFormat.dateTimeNoMillis().withZone(DateTimeZone.UTC).print(msg.getSaveDate()));
 
         try {
             String itemId = msg.getUuid();

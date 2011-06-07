@@ -10,6 +10,7 @@
         <property name="room"/>
         <property name="content"/>
         <property name="date" type="org.joda.time.contrib.hibernate.PersistentDateTime"/>
+        <property name="saveDate" type="org.joda.time.contrib.hibernate.PersistentDateTime"/>
     </class>
 
 </hibernate-mapping>

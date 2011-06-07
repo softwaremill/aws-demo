@@ -7,5 +7,6 @@ public class MessageMappingConstants {
     public static final String ROOM = "room";
     public static final String CONTENT = "content";
     public static final String DATE = "date";
+    public static final String SAVE_DATE = "save_date";
     public static final String MESSAGES_DOMAIN = "messages";
 }
