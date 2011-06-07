@@ -23,6 +23,6 @@ public class HibernateMessageLister implements MessagesLister {
         Session session = sessionFactory.openSession();
 
         return session.createQuery("select m from Message m where m.room = :room order by m.date desc")
-                .setParameter("room", room).setMaxResults(100).list();
+                .setParameter("room", room).setMaxResults(10).list();
     }
 }

@@ -27,7 +27,7 @@ public class SDBMessageLister implements MessagesLister {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ").append(MESSAGES_DOMAIN).append(" WHERE ")
                 .append(ROOM).append(" = '").append(room).append("' AND ").append(DATE)
-                .append(" IS NOT NULL ORDER BY ").append(DATE).append(" DESC LIMIT 100");
+                .append(" IS NOT NULL ORDER BY ").append(DATE).append(" DESC LIMIT 10");
 
         String query = sb.toString();
         System.out.println("Executing query: " + query);
