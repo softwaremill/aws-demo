@@ -1,7 +1,11 @@
 package pl.softwaremill.demo;
 
-import javax.jms.*;
-import javax.naming.InitialContext;
+import pl.softwaremill.demo.entity.*;
+import pl.softwaremill.demo.entity.Message;
+import pl.softwaremill.demo.service.MessageAdder;
+import pl.softwaremill.demo.service.MessagesLister;
+import pl.softwaremill.demo.service.QueueService;
+
 
 /**
  * User: szimano
@@ -9,51 +13,36 @@ import javax.naming.InitialContext;
 public class QueueListener implements Runnable {
     boolean runs = true;
 
+    private MessageAdder messageAdder;
+    private QueueService queueService;
+
+    public QueueListener(MessageAdder messageAdder, QueueService queueService) {
+        this.messageAdder = messageAdder;
+        this.queueService = queueService;
+    }
 
     @Override
     public void run() {
         while (runs) {
-            System.out.println("Reading from the queue");
+            Message messageReceived;
 
             // read from the queue
+            if ((messageReceived = queueService.readMessage()) != null) {
+                System.out.println("Message read: " + messageReceived);
 
-            try {
-                Connection connection = null;
-                InitialContext initialContext = null;
+                System.out.println("Processing");
+
                 try {
-                    initialContext = new InitialContext();
-
-                    Queue queue = (Queue) initialContext.lookup("java:comp/env/jms/queues/MessageQueue");
-
-                    ConnectionFactory cf = (ConnectionFactory) initialContext.lookup("/ConnectionFactory");
-
-                    connection = cf.createConnection();
-
-                    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-                    MessageConsumer messageConsumer = session.createConsumer(queue);
-
-                    connection.start();
-
-                    ObjectMessage messageReceived = (ObjectMessage) messageConsumer.receive(5000);
-
-                    // got message
-                    if (messageReceived != null)
-                        System.out.println("Message read: " + messageReceived.getObject());
-                } finally {
-                    if (initialContext != null) {
-                        initialContext.close();
-                    }
-                    if (connection != null) {
-                        connection.close();
-                    }
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    //
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+
+                messageAdder.addMessage(messageReceived);
             }
 
             try {
-                Thread.sleep(5000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 //
             }
