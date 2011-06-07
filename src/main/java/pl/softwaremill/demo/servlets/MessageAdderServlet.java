@@ -14,6 +14,7 @@ import pl.softwaremill.demo.service.QueueService;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,27 +26,11 @@ import java.util.UUID;
  * @author Adam Warski (adam at warski dot org)
  */
 public class MessageAdderServlet extends HttpServlet {
-    private MessageAdder messageAdder;
     private QueueService queueService;
 
     @Override
-    public void init() throws ServletException {
-
-        if (System.getProperty("local") == null) {
-            try {
-                AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
-
-                MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
-                messageAdder = new SDBMessageAdder(messagesDomainProvider);
-            } catch (IOException e) {
-                throw new ServletException(e);
-            }
-        } else {
-            messageAdder = new HibernateMessageAdder(new SessionFactoryProvider().getSessionFactory());
-            queueService = new JMSQueueService();
-        }
-
-        new Thread(new QueueListener(messageAdder, queueService)).start();
+    public void init(ServletConfig config) throws ServletException {
+        queueService = (QueueService) config.getServletContext().getAttribute(ContextSetup.QUEUE_SERVICE);
     }
 
     @Override

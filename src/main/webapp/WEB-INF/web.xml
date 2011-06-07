@@ -4,6 +4,11 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+    <listener>
+        <listener-class>pl.softwaremill.demo.servlets.ContextSetup</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>MessageAdder</servlet-name>
         <servlet-class>pl.softwaremill.demo.servlets.MessageAdderServlet</servlet-class>
@@ -22,4 +27,5 @@
         <servlet-name>MessagesLister</servlet-name>
         <url-pattern>/list_messages</url-pattern>
     </servlet-mapping>
+
 </web-app>

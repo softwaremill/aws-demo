@@ -12,6 +12,7 @@ import pl.softwaremill.demo.impl.sdb.MessagesDomainProvider;
 import pl.softwaremill.demo.impl.sdb.SDBMessageLister;
 import pl.softwaremill.demo.service.MessagesLister;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,23 +27,8 @@ public class MessagesListerServlet extends HttpServlet {
     private MessagesLister messagesLister;
 
     @Override
-    public void init() throws ServletException {
-
-        if (System.getProperty("local") == null) {
-            try {
-                AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
-
-                MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
-
-                messagesLister = new SDBMessageLister(messagesDomainProvider);
-
-            } catch (IOException e) {
-                throw new ServletException(e);
-            }
-        }
-        else {
-            messagesLister = new HibernateMessageLister(new SessionFactoryProvider().getSessionFactory());
-        }
+    public void init(ServletConfig config) throws ServletException {
+        messagesLister = (MessagesLister) config.getServletContext().getAttribute(ContextSetup.MESSAGE_LISTER);
     }
 
     @Override

@@ -48,4 +48,8 @@ public class QueueListener implements Runnable {
             }
         }
     }
+
+    public void stop() {
+        runs = false;
+    }
 }
