@@ -49,12 +49,12 @@
 
 <div id="_message_list_template" style="display: none">
     <div id="main">
-        <table style="text-align: center; margin-left: auto; margin-right: auto; width: 80%">
+        <table style="text-align: center; margin-left: auto; margin-right: auto; width: 80%; font-size: large">
             <tr>
                 <th>Content</th>
                 <th>Date</th>
                 <th>Save Date</th>
-                <th>Delay</th>
+                <th>Delay (in seconds)</th>
             </tr>
             <tr class="_message">
                 <td class="_message_content"></td>
@@ -72,6 +72,7 @@
         <header class="clearfix">
             <nav class="clearfix">
                 <ul class="main_menu">
+                    <li>Choose the room:</li>
                     <li><a href="#" id="_choose_room_confitura">Confitura</a></li>
                     <li><a href="#" id="_choose_room_robots">Robots</a></li>
                 </ul>
@@ -126,7 +127,7 @@
 
 
         <div class="footer_middle">
-            <p><strong>©2010 <a href="http://softwaremill.eu/">SoftwareMill</a></strong></p>
+            <p><strong>(C) by 2011 <a href="http://softwaremill.eu/">SoftwareMill</a></strong></p>
         </div>
         <div class="footer_right">
             <ul>
@@ -164,7 +165,7 @@
                 $.post("add_message", { content: content, room: currentRoom }, function() {
                     var $msg = $("<span>Message added, it will be visible shortly</span>");
                     $("#_add_message_flash").append($msg);
-                    $msg.hide().fadeIn(2000).delay(5000).fadeOut(2000);
+                    $msg.hide().fadeIn(1000).delay(2000).fadeOut(1000);
                 });
             }
         });
@@ -174,10 +175,10 @@
                         "message<-messages": {
                             "td._message_content": "message.content",
                             "td._message_date": function(ctx) {
-                                return new Date(ctx.item.date);
+                                return formatDate(new Date(ctx.item.date));
                             },
                             "td._message_save_date": function(ctx) {
-                                return new Date(ctx.item.saveDate);
+                                return formatDate(new Date(ctx.item.saveDate));
                             },
                             "td._message_delay": function(ctx) {
                                 return (ctx.item.saveDate - ctx.item.date) / 1000;
@@ -185,6 +186,18 @@
                         }
                     }
                 });
+
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDay();
+
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var seconds = date.getSeconds();
+
+            return ""+year+"/"+month+"/"+day+" "+hour+":"+minute+":"+seconds;
+        }
 
         function refreshMessageList() {
             $.get("list_messages", { room: currentRoom }, function(data) {
