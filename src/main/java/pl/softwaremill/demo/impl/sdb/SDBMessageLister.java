@@ -26,7 +26,7 @@ public class SDBMessageLister implements MessagesLister {
     public List<Message> listRecentMessages(String room) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ").append(MESSAGES_DOMAIN).append(" WHERE ")
-                .append(ROOM).append(" = '").append(room).append("' AND ").append(DATE)
+                .append(ROOM).append(" = '").append(escapeValue(room)).append("' AND ").append(DATE)
                 .append(" IS NOT NULL ORDER BY ").append(DATE).append(" DESC LIMIT 10");
 
         String query = sb.toString();
@@ -45,6 +45,10 @@ public class SDBMessageLister implements MessagesLister {
         }
 
         return messages;
+    }
+
+    private String escapeValue(String value) {
+        return value.replaceAll("'", "''").replaceAll("\"", "\"\"");
     }
 
     private Message convertItemToMessage(Item item) {
