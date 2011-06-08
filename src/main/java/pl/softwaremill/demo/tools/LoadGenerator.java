@@ -30,11 +30,15 @@ public class LoadGenerator {
         int i = 0;
 
         while (true) {
+            String content = "Some content " + i++;
+
             List<NameValuePair> qparams = new ArrayList<NameValuePair>();
             qparams.add(new BasicNameValuePair("room", "robots"));
-            qparams.add(new BasicNameValuePair("content", "Some content "+i++));
+            qparams.add(new BasicNameValuePair("content", content));
 
-            URI uri = URIUtils.createURI("http", "localhost", 8080, "/aws-demo/add_message",
+            System.out.println("Sending message " + content);
+
+            URI uri = URIUtils.createURI("http", "localhost", 8080, "/add_message",
                     URLEncodedUtils.format(qparams, "UTF-8"), null);
             HttpPost post = new HttpPost(uri);
 

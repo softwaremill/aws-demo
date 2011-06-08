@@ -6,3 +6,5 @@ To start, follow these three easy steps:
 # Execute: mvn jetty:run [-Dlocal]
 
 Optional parameter -Dlocal will use the hibernate/mysql implementation
+
+To run the load generator, execut: mvn -Ploadgenerator exec:exec
