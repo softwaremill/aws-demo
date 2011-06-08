@@ -1,6 +1,9 @@
 package pl.softwaremill.demo.servlets;
 
+import com.google.common.collect.ImmutableMap;
 import org.hibernate.SessionFactory;
+import pl.softwaremill.common.conf.Configuration;
+import pl.softwaremill.common.conf.PropertiesProvider;
 import pl.softwaremill.demo.QueueListener;
 import pl.softwaremill.demo.impl.hibernate.HibernateMessageAdder;
 import pl.softwaremill.demo.impl.hibernate.HibernateMessageLister;
@@ -10,7 +13,9 @@ import pl.softwaremill.demo.impl.sdb.AwsAccessKeys;
 import pl.softwaremill.demo.impl.sdb.MessagesDomainProvider;
 import pl.softwaremill.demo.impl.sdb.SDBMessageAdder;
 import pl.softwaremill.demo.impl.sdb.SDBMessageLister;
+import pl.softwaremill.demo.impl.sqs.SQSQueueService;
 import pl.softwaremill.demo.service.MessageAdder;
+import pl.softwaremill.demo.service.MessagesLister;
 import pl.softwaremill.demo.service.QueueService;
 
 import javax.servlet.ServletContext;
@@ -33,30 +38,35 @@ public class ContextSetup implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
 
-        MessageAdder messageAdder = null;
-        QueueService queueService = null;
+        MessageAdder messageAdder;
+        MessagesLister messagesLister;
+        QueueService queueService;
 
         if (System.getProperty("local") == null) {
+            AwsAccessKeys awsAccessKeys;
             try {
-                AwsAccessKeys awsAccessKeys = AwsAccessKeys.createFromResources();
-
-                MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
-                context.setAttribute(MESSAGE_ADDER, messageAdder = new SDBMessageAdder(messagesDomainProvider));
-                context.setAttribute(MESSAGE_LISTER, new SDBMessageLister(messagesDomainProvider));
-
-                //TODO add sqsqueryservice
+                awsAccessKeys = AwsAccessKeys.createFromResources();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            setupSQSPropertiesProvider(awsAccessKeys);
+            MessagesDomainProvider messagesDomainProvider = new MessagesDomainProvider(awsAccessKeys);
+
+            messageAdder = new SDBMessageAdder(messagesDomainProvider);
+            messagesLister = new SDBMessageLister(messagesDomainProvider);
+            queueService = new SQSQueueService();
         } else {
             SessionFactory sessionFactory = new SessionFactoryProvider().getSessionFactory();
 
-            context.setAttribute(MESSAGE_ADDER,
-                    messageAdder = new HibernateMessageAdder(sessionFactory));
-            context.setAttribute(MESSAGE_LISTER, new HibernateMessageLister(sessionFactory));
-
-            context.setAttribute(QUEUE_SERVICE, queueService = new JMSQueueService());
+            messageAdder = new HibernateMessageAdder(sessionFactory);
+            messagesLister = new HibernateMessageLister(sessionFactory);
+            queueService = new JMSQueueService();
         }
+
+        context.setAttribute(MESSAGE_ADDER, messageAdder);
+        context.setAttribute(MESSAGE_LISTER, messagesLister);
+        context.setAttribute(QUEUE_SERVICE, queueService);
 
         QueueListener queueListener = new QueueListener(messageAdder, queueService);
 
@@ -68,5 +78,20 @@ public class ContextSetup implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ((QueueListener) sce.getServletContext().getAttribute(QUEUE_LISTENER)).stop();
+    }
+
+    private void setupSQSPropertiesProvider(final AwsAccessKeys awsAccessKeys) {
+        Configuration.registerPropertiesProvider(new PropertiesProvider() {
+            @Override
+            public ImmutableMap<String, String> lookupProperties(String name) {
+                if ("sqs".equals(name)) {
+                    return ImmutableMap.of("sqsServer", "sqs.eu-west-1.amazonaws.com",
+                            "AWSAccessKeyId", awsAccessKeys.getAccessKeyId(),
+                            "SecretAccessKey", awsAccessKeys.getSecretAccessKey());
+                }
+
+                return null;
+            }
+        });
     }
 }
