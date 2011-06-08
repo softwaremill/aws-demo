@@ -108,6 +108,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>7.0.0.pre5</version>
                 <configuration>
+                    <contextPath>/</contextPath>
                     <jettyEnvXml>${project.basedir}/jetty-env.xml</jettyEnvXml>
                 </configuration>
             </plugin>
