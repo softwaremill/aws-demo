@@ -33,6 +33,7 @@ public class StartNewInstance {
         LaunchConfiguration launchConfiguration = new LaunchConfiguration("ami-e287b196");
         launchConfiguration.setSecurityGroup(Arrays.asList("Confitura"));
         launchConfiguration.setKeyName("confitura");
+        launchConfiguration.setAvailabilityZone("eu-west-1c");
         ReservationDescription reservationDescription = ec2.runInstances(launchConfiguration);
 
         List<String> instanceIds = new ArrayList<String>();

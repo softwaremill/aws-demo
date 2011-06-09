@@ -32,6 +32,7 @@ public class QueueListener implements Runnable {
 
                 System.out.println("Processing");
 
+                // Simulate message processing
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
