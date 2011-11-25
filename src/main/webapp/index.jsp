@@ -73,7 +73,7 @@
             <nav class="clearfix">
                 <ul class="main_menu">
                     <li>Choose the room:</li>
-                    <li><a href="#" id="_choose_room_confitura">Confitura</a></li>
+                    <li><a href="#" id="_choose_room_softdevcon">SoftDevCon</a></li>
                     <li><a href="#" id="_choose_room_robots">Robots</a></li>
                 </ul>
 
@@ -87,7 +87,7 @@
     <div id="main">
         <h2 class="tophl banner">
             <div>
-                Current room: <span id="_current_room">confitura</span>
+                Current room: <span id="_current_room">softdevcon</span>
             </div>
 
             <div>
@@ -138,7 +138,7 @@
 
 <script>
     $().ready(function() {
-        var currentRoom = "confitura";
+        var currentRoom = "softdevcon";
 
         function selectRoom(room) {
             currentRoom = room;
@@ -147,9 +147,9 @@
             $("#_current_room").html(currentRoom);
         }
 
-        $("#_choose_room_confitura").click(function(e) {
+        $("#_choose_room_softdevcon").click(function(e) {
             e.preventDefault();
-            selectRoom("confitura");
+            selectRoom("softdevcon");
         });
         $("#_choose_room_robots").click(function(e) {
             e.preventDefault();
