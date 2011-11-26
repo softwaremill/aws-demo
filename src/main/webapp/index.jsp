@@ -220,7 +220,7 @@
             refreshMessageList();
         });
 
-        // Referesh every 5secs
+        // Referesh every 0.5secs
         window.setInterval(refreshMessageList, 500);
 
         // Initial refresh
