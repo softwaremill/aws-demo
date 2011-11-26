@@ -7,4 +7,4 @@ To start, follow these three easy steps:
 
 Optional parameter -Dlocal will use the hibernate/mysql implementation
 
-To run the load generator, execute: mvn -lg exec:exec
+To run the load generator, execute: mvn -Plg exec:exec
